@@ -35,10 +35,6 @@ a { color: var(--accent); text-underline-offset: .15em; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* line art on white: multiply lets it sit on the paper tone; inverted in dark mode */
-.hero, .card { display: block; width: 100%; height: auto; mix-blend-mode: multiply; border: 1px solid var(--rule); }
-.hero { margin-bottom: 2rem; }
-.card { margin-bottom: .9rem; }
-@media (prefers-color-scheme: dark) { .hero, .card { filter: invert(1) sepia(.15); mix-blend-mode: screen; } }
 .title { padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 1rem; }
 .kicker { margin: 0 0 1rem; font-variant-caps: all-small-caps; letter-spacing: .12em; color: var(--accent); }
 h1 { margin: 0; font-weight: 600; font-size: clamp(2.4rem, 7vw, 3.6rem); line-height: 1; letter-spacing: -.015em; }
@@ -61,7 +57,12 @@ h2 .num { color: var(--accent); font-weight: 400; margin-right: .35em; }
 
 /* packages, as a contents page */
 .pkgs { list-style: none; margin: 0; padding: 0; }
-.pkg { padding: 1rem 0 1.25rem; border-bottom: 1px solid var(--rule); }
+.pkg { display: flex; gap: 1.1rem; padding: 1rem 0 1.25rem; border-bottom: 1px solid var(--rule); }
+.pkg .body { flex: 1; min-width: 0; }
+/* the Kindle library cover, small, like a book on a contents page */
+.pkg .cover { flex: none; width: 4.5rem; height: auto; align-self: flex-start; margin-top: .3rem;
+  border: 1px solid var(--rule); box-shadow: 2px 2px 0 var(--paper-2); mix-blend-mode: multiply; }
+@media (prefers-color-scheme: dark) { .pkg .cover { filter: invert(1) sepia(.15); mix-blend-mode: screen; } }
 .pkg:first-child { padding-top: 0; }
 .pkg .head { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
 .pkg .t { font-weight: 600; font-size: 1.15rem; }
@@ -97,7 +98,6 @@ footer p:first-child { color: var(--accent); font-size: 1.2rem; }
 </head>
 <body>
 <header class="title">
-  <img class="hero" src="assets/hero.png" width="1300" height="900" alt="A hand-drawn sudoku grid titled SUDOKU, scribbled over with doodles.">
   <p class="kicker">a KPM repository · {{ manifest["id"] }}</p>
   <h1>{{ manifest["name"] }}</h1>
   <p class="sub">{{ manifest["description"] }}</p>
@@ -160,7 +160,8 @@ footer p:first-child { color: var(--accent); font-size: 1.2rem; }
       {% set p = manifest["packages"][package_id] %}
       {% set latest = p["artifacts"][-1] if p["artifacts"] else none %}
       <li class="pkg">
-        <img class="card" src="packages/{{ package_id }}/card.png" alt="" onerror="this.remove()">
+        <img class="cover" src="packages/{{ package_id }}/cover.png" width="600" height="900" alt="" onerror="this.remove()">
+        <div class="body">
         <div class="head">
           <span class="t">{{ p["name"] }}</span>
           {% if latest %}<span class="v">v{{ latest["version"] | join(".") }}</span>{% endif %}
@@ -169,6 +170,7 @@ footer p:first-child { color: var(--accent); font-size: 1.2rem; }
         <p class="d">{{ p["description"] }}</p>
         <div class="cmd"><code>;kpm install {{ package_id }}</code><button type="button" class="copy">copy</button></div>
         {% if latest %}<p class="dl"><a href="{{ latest['url'] }}" download>Download the .kpkg</a></p>{% endif %}
+        </div>
       </li>
       {% endfor %}
     </ol>
