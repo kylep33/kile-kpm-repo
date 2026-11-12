@@ -68,6 +68,16 @@ h2 .num { color: var(--accent); font-weight: 400; margin-right: .35em; }
 .pkg .dl a:hover { color: var(--ink); text-decoration-color: currentColor; }
 .empty { color: var(--soft); font-style: italic; }
 
+/* the command reference: folded away under the title until wanted */
+.ref { margin-top: 1.75rem; }
+.ref summary { cursor: pointer; width: fit-content; font-variant-caps: all-small-caps; letter-spacing: .08em; color: var(--accent); }
+.ref summary:hover { color: var(--ink); }
+.ref[open] summary { margin-bottom: .5rem; }
+.ref dl { margin: 0; }
+.ref dt { margin-top: .9rem; font-size: .95rem; color: var(--soft); font-style: italic; }
+.ref dd { margin: 0; }
+.ref .cmd { margin: .25rem 0 0; }
+
 footer { text-align: center; color: var(--soft); font-size: .9rem; padding: 2.5rem 0 3.5rem; }
 footer p { margin: .3rem 0; }
 footer p:first-child { color: var(--accent); font-size: 1.2rem; }
@@ -80,6 +90,32 @@ footer p:first-child { color: var(--accent); font-size: 1.2rem; }
   <p class="kicker">a KPM repository · {{ manifest["id"] }}</p>
   <h1>{{ manifest["name"] }}</h1>
   <p class="sub">{{ manifest["description"] }}</p>
+  <details class="ref">
+    <summary>Every KPM command</summary>
+    <p class="aside">Type these in the Kindle search bar. Replace the words in angle brackets.</p>
+    <dl>
+      <dt>Add this repository</dt>
+      <dd><div class="cmd"><code>;kpm add-repo {{ url if show_url else "<url>" }}</code><button type="button" class="copy">copy</button></div></dd>
+      <dt>Remove this repository</dt>
+      <dd><div class="cmd"><code>;kpm remove-repo {{ manifest["id"] }}</code><button type="button" class="copy">copy</button></div></dd>
+      <dt>List your repositories</dt>
+      <dd><div class="cmd"><code>;kpm list-repo</code><button type="button" class="copy">copy</button></div></dd>
+      <dt>Refresh the package index</dt>
+      <dd><div class="cmd"><code>;kpm update</code><button type="button" class="copy">copy</button></div></dd>
+      <dt>Search for a package</dt>
+      <dd><div class="cmd"><code>;kpm search &lt;words&gt;</code><button type="button" class="copy">copy</button></div></dd>
+      <dt>Install or reinstall a package</dt>
+      <dd><div class="cmd"><code>;kpm install &lt;id&gt;</code><button type="button" class="copy">copy</button></div></dd>
+      <dt>Uninstall a package</dt>
+      <dd><div class="cmd"><code>;kpm uninstall &lt;id&gt;</code><button type="button" class="copy">copy</button></div></dd>
+      <dt>Upgrade everything installed</dt>
+      <dd><div class="cmd"><code>;kpm upgrade</code><button type="button" class="copy">copy</button></div></dd>
+      <dt>Launch a package</dt>
+      <dd><div class="cmd"><code>;kpm launch &lt;id&gt;</code><button type="button" class="copy">copy</button></div></dd>
+      <dt>Show the KPM version</dt>
+      <dd><div class="cmd"><code>;kpm version</code><button type="button" class="copy">copy</button></div></dd>
+    </dl>
+  </details>
 </header>
 
 <main>
