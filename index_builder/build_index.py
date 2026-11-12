@@ -2,7 +2,7 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 import tomllib
 import json
 
-KPM_MANIFEST_VERSION = 1
+KPM_MANIFEST_VERSION = 2
 
 env = Environment(
     loader=PackageLoader("build_index"),
