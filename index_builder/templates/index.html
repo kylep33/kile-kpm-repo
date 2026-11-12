@@ -72,6 +72,12 @@ h2 .num { color: var(--accent); font-weight: 400; margin-right: .35em; }
 .pkg .dl { font-size: .9rem; color: var(--soft); }
 .pkg .dl a { color: var(--soft); text-decoration-color: var(--rule); }
 .pkg .dl a:hover { color: var(--ink); text-decoration-color: currentColor; }
+.parts { margin-top: .9rem; }
+.parts summary { cursor: pointer; width: fit-content; font-variant-caps: all-small-caps; letter-spacing: .08em; color: var(--accent); }
+.parts summary:hover { color: var(--ink); }
+.parts .pkgs { margin-top: .5rem; padding-left: 1rem; border-left: 2px solid var(--rule); }
+.parts .pkg:last-child { border-bottom: 0; }
+.parts .pkg .t { font-size: 1rem; }
 .empty { color: var(--soft); font-style: italic; }
 
 /* the command reference: folded away under the title until wanted */
@@ -155,11 +161,9 @@ footer p:first-child { color: var(--accent); font-size: 1.2rem; }
     {% if is_empty %}
     <p class="empty">Nothing here yet.</p>
     {% else %}
-    <ol class="pkgs">
-      {% for package_id in package_ids %}
+    {% macro card(package_id) %}
       {% set p = manifest["packages"][package_id] %}
       {% set latest = p["artifacts"][-1] if p["artifacts"] else none %}
-      <li class="pkg">
         <img class="cover" src="packages/{{ package_id }}/cover.png" width="600" height="900" alt="" onerror="this.remove()">
         <div class="body">
         <div class="head">
@@ -170,8 +174,31 @@ footer p:first-child { color: var(--accent); font-size: 1.2rem; }
         <p class="d">{{ p["description"] }}</p>
         <div class="cmd"><code>;kpm install {{ package_id }}</code><button type="button" class="copy">copy</button></div>
         {% if latest %}<p class="dl"><a href="{{ latest['url'] }}" download>Download the .kpkg</a></p>{% endif %}
+        {{ caller() if caller else "" }}
         </div>
+    {% endmacro %}
+    {# A package whose id is another's id plus "-..." (kambience-sounds-1) folds under that one. #}
+    <ol class="pkgs">
+      {% for package_id in package_ids %}
+      {% set ns = namespace(parent=false, parts=[]) %}
+      {% for other in package_ids %}{% if package_id.startswith(other ~ "-") %}{% set ns.parent = true %}{% endif %}{% endfor %}
+      {% if not ns.parent %}
+      {% set ns.parts = [] %}
+      {% for other in package_ids %}{% if other.startswith(package_id ~ "-") %}{% set ns.parts = ns.parts + [other] %}{% endif %}{% endfor %}
+      {% set parts = ns.parts %}
+      <li class="pkg">
+        {% call card(package_id) %}
+        {% if parts %}
+        <details class="parts">
+          <summary>{{ parts | length }} more package{{ "s" if parts | length > 1 }} installed with it</summary>
+          <ol class="pkgs">
+            {% for part in parts %}<li class="pkg">{{ card(part) }}</li>{% endfor %}
+          </ol>
+        </details>
+        {% endif %}
+        {% endcall %}
       </li>
+      {% endif %}
       {% endfor %}
     </ol>
     {% endif %}
