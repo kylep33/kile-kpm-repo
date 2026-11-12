@@ -1,5 +1,5 @@
 ###
 # URL
 ###
-show_url = false # Whether we should show a `;kpm add-repo` command with the URL
-url = "" # The URL to this repository
+show_url = true # Whether we should show a `;kpm add-repo` command with the URL
+url = "https://kylep33.github.io/kpm-repo/manifest.json" # The URL to this repository

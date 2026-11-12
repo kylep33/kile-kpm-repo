@@ -1,7 +1,25 @@
 {
   "manifest_version": 1,
-  "id": "changeme",
-  "name": "template repository",
-  "description": "This is a template reposiory for KPM",
-  "packages": {}
+  "id": "kylep33",
+  "name": "kylep33's Kindle apps",
+  "description": "Homebrew by kylep33: ksudoku and more.",
+  "packages": {
+    "ksudoku": {
+      "name": "ksudoku",
+      "author": "kile",
+      "description": "Clean e-ink Sudoku with notes, settings and a win animation.",
+      "artifacts": [
+        {
+          "url": "packages/ksudoku/artifacts/ksudoku_1.0.0_kindleany.kpkg",
+          "version": [
+            1,
+            0,
+            0
+          ],
+          "dependencies": [],
+          "supported_platforms": null
+        }
+      ]
+    }
+  }
 }
