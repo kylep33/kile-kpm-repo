@@ -77,7 +77,8 @@ h2 .num { color: var(--accent); font-weight: 400; margin-right: .35em; }
 .ref dt { margin-top: .9rem; font-size: .95rem; color: var(--soft); font-style: italic; }
 .ref dd { margin: 0; }
 .ref .cmd { margin: .25rem 0 0; }
-.ref .note { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--rule); font-size: .95rem; }
+.ref + .ref { margin-top: .75rem; }
+.ref .note { font-size: .95rem; }
 .ref .note p { margin: .6rem 0; }
 .ref .note p code { font: .85rem ui-monospace, "SF Mono", Consolas, monospace; background: var(--paper-2); padding: .05em .3em; }
 .sc { font-variant-caps: all-small-caps; letter-spacing: .06em; color: var(--accent); }
@@ -119,12 +120,16 @@ footer p:first-child { color: var(--accent); font-size: 1.2rem; }
       <dt>Show the KPM version</dt>
       <dd><div class="cmd"><code>;kpm version</code><button type="button" class="copy">copy</button></div></dd>
     </dl>
+  </details>
+  <details class="ref">
+    <summary>Running KPM over SSH</summary>
     <div class="note">
-      <p><span class="sc">Over SSH or kterm</span> — the <code>;</code> only works in the search bar, and <code>kpm</code> isn't on the shell's path. Drop the <code>;</code> and use the full path, or alias it once per session:</p>
+      <p><span class="sc">Getting in</span> — KOReader's SSH server listens on port 22 as <code>root</code>. Add your public key to <code>koreader/settings/SSH/authorized_keys</code> to skip the password.</p>
+      <div class="cmd"><code>ssh root@&lt;kindle-ip&gt;</code><button type="button" class="copy">copy</button></div>
+      <p>Don't worry if the Kindle won't answer <code>ping</code>: its firewall drops ping, so it looks offline when it isn't. Try <code>ssh</code> instead.</p>
+      <p><span class="sc">Running commands</span> — in a shell the <code>;</code> is a syntax error, and <code>kpm</code> isn't on the path. Drop the <code>;</code> and alias the full path once per session (home is in <code>/tmp</code>, so a profile won't survive a reboot):</p>
       <div class="cmd"><code>alias kpm=/var/local/kmc/bin/kpm</code><button type="button" class="copy">copy</button></div>
-      <p>Then <code>kpm update</code>, <code>kpm install &lt;id&gt;</code> and so on. A shell profile on the Kindle won't survive a reboot (home is in <code>/tmp</code>), so put this on your computer instead and run KPM from there:</p>
-      <div class="cmd"><code>alias kpm='ssh root@&lt;kindle-ip&gt; /var/local/kmc/bin/kpm'</code><button type="button" class="copy">copy</button></div>
-      <p><span class="sc">Getting in</span> — KOReader's SSH server listens on port 22 as <code>root</code>; add your public key to <code>koreader/settings/SSH/authorized_keys</code> to skip the password. Don't worry if the Kindle won't answer <code>ping</code>: its firewall drops ping, so it looks offline when it isn't. Try <code>ssh root@&lt;kindle-ip&gt;</code> instead.</p>
+      <p>Then every command above works without the <code>;</code>, e.g. <code>kpm update</code> or <code>kpm install &lt;id&gt;</code>.</p>
     </div>
   </details>
 </header>
