@@ -6,7 +6,7 @@
   "packages": {
     "ksudoku": {
       "name": "ksudoku",
-      "author": "kile",
+      "author": "kylep33",
       "description": "Clean e-ink Sudoku with notes, settings and a win animation.",
       "artifacts": [
         {
